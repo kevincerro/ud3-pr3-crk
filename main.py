@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from services import face_service
 
 app = Flask(__name__)
 
@@ -10,4 +11,8 @@ def homepage():
 
 @app.route("/results", methods=['POST'])
 def results():
-    return render_template('results.html')
+    url = request.form.get('url')
+
+    detected_faces = face_service.detect_faces_in_image(url)
+
+    return render_template('results.html', image_url=url, faces=detected_faces)

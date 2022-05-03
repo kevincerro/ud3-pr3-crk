@@ -4,7 +4,30 @@
     <div class="container">
         
         <h2 >RESULTADOS</h2>
-        
+
+        {% for face in faces %}
+            <p>{{ face.face_id }}</p>
+        {% endfor %}
+
+        <canvas id="canvas" width="500"></canvas>
+        <script>
+            window.onload = function() {
+                let canvas = document.getElementById('canvas');
+                let context = canvas.getContext('2d');
+
+                drawImage(canvas, context);
+            };
+
+            function drawImage(canvas, context) {
+                let image = new Image();
+                image.onload = function() {
+                   let ratio = this.height / this.width;
+                   canvas.height = canvas.width * ratio;
+                   context.drawImage(this, 0, 0, canvas.width, canvas.height);
+                };
+                image.src = '{{ image_url }}';
+            }
+        </script>
     </div>
 
     
