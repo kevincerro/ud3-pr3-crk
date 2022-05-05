@@ -18,7 +18,7 @@
 
                 <ul>
                     <li>Descripción: {{ image.description }}.</li>
-                    <li>Color de énfasis: {{ image.color }}</li>
+                    <li>Color de énfasis: #{{ image.color }}</li>
                     <li>Etiquetas: {{ image.tags | join(', ') }}.</li>
                     <li>
                         {% if image.ocr | length > 0 %}
@@ -38,32 +38,32 @@
 
             <br>
 
-            <div class="col-md-6">
-                {% if image.faces | length > 0 %}
-                    {% for face in image.faces %}
-                            <h4>Cara {{ loop.index }}</h4>
+            {% if image.faces | length > 0 %}
+                {% for face in image.faces %}
+                    <div class="col-md-6">
+                        <h4>Cara {{ loop.index }}</h4>
+                        <ul>
+                            {% set rect = face.face_rectangle %}
+                            <li>Identificador: {{ face.face_id }}</li>
+                            <li>Localización:</li>
                             <ul>
-                                {% set rect = face.face_rectangle %}
-                                <li>Identificador: {{ face.face_id }}</li>
-                                <li>Localización:</li>
-                                <ul>
-                                    <li>Coordenada arriba: {{ rect.top }}</li>
-                                    <li>Coordenada izquierda: {{ rect.left }}</li>
-                                    <li>Ancho: {{ rect.width }} px</li>
-                                    <li>Alto: {{ rect.height }} px</li>
-                                </ul>
-                                <li>Edad: {{ face.face_attributes.age }}</li>
-                                <li>Emoción:</li>
-                                <ul>
-                                    <li>Nombre: {{ face.emotion.name }}</li>
-                                    <li>Puntuación: {{ face.emotion.score }}</li>
-                                </ul>
+                                <li>Coordenada arriba: {{ rect.top }}</li>
+                                <li>Coordenada izquierda: {{ rect.left }}</li>
+                                <li>Ancho: {{ rect.width }} px</li>
+                                <li>Alto: {{ rect.height }} px</li>
                             </ul>
-                    {% endfor %}
-                {% else %}
-                    <p>No se han detectado caras en la imágen.</p>
-                {% endif %}
-            </div>
+                            <li>Edad: {{ face.face_attributes.age }}</li>
+                            <li>Emoción:</li>
+                            <ul>
+                                <li>Nombre: {{ face.emotion.name }}</li>
+                                <li>Puntuación: {{ face.emotion.score }}</li>
+                            </ul>
+                        </ul>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No se han detectado caras en la imágen.</p>
+            {% endif %}
         </div>
     </div>
 
