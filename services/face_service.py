@@ -3,7 +3,7 @@ from azure.cognitiveservices.vision.face import FaceClient
 from msrest.authentication import CognitiveServicesCredentials
 
 
-def get_face_client():
+def get_client():
     return FaceClient(
         os.environ.get('AZURE_FACE_ENDPOINT'),
         CognitiveServicesCredentials(os.environ.get('AZURE_FACE_KEY'))
@@ -11,13 +11,13 @@ def get_face_client():
 
 
 def detect_faces_in_image(url: str):
-    face_client = get_face_client()
+    client = get_client()
 
-    face_attributes = ['age', 'emotion']
-    detected_faces = face_client.face.detect_with_url(url=url, return_face_attributes=face_attributes)
+    attributes = ['age', 'emotion']
+    detected_faces = client.face.detect_with_url(url=url, return_face_attributes=attributes)
 
     if not detected_faces:
-        raise Exception('No face detected.')
+        return []
 
     # Find emotion with better score
     for face in detected_faces:
