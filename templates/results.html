@@ -4,7 +4,36 @@
     <div class="container">
         
         <h2 >RESULTADOS</h2>
-        
+
+        <div class="row">
+            <div class="col-md-6">
+                <img width="100%" src="{{ image_url }}">
+            </div>
+
+            <div class="col-md-6">
+                <ul>
+                    {% for face in faces %}
+                        <li>{{ face.face_id }}</li>
+                        <ul>
+                            {% set rect = face.face_rectangle %}
+                            <li>Localización:</li>
+                            <ul>
+                                <li>Coordenada arriba: {{ rect.top }}</li>
+                                <li>Coordenada izquierda: {{ rect.left }}</li>
+                                <li>Ancho: {{ rect.width }} px</li>
+                                <li>Alto: {{ rect.height }} px</li>
+                            </ul>
+                            <li>Edad: {{ face.face_attributes.age }}</li>
+                            <li>Emoción:</li>
+                            <ul>
+                                <li>Nombre: {{ face.emotion.name }}</li>
+                                <li>Puntuación: {{ face.emotion.score }}</li>
+                            </ul>
+                        </ul>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 
     
@@ -14,4 +43,3 @@
         </div>
     </div>    
 {% endblock %}
-
