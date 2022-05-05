@@ -5,29 +5,35 @@
         
         <h2 >RESULTADOS</h2>
 
-        {% for face in faces %}
-            <p>{{ face.face_id }}</p>
-        {% endfor %}
+        <div class="row">
+            <div class="col-md-6">
+                <img width="100%" src="{{ image_url }}">
+            </div>
 
-        <canvas id="canvas" width="500"></canvas>
-        <script>
-            window.onload = function() {
-                let canvas = document.getElementById('canvas');
-                let context = canvas.getContext('2d');
-
-                drawImage(canvas, context);
-            };
-
-            function drawImage(canvas, context) {
-                let image = new Image();
-                image.onload = function() {
-                   let ratio = this.height / this.width;
-                   canvas.height = canvas.width * ratio;
-                   context.drawImage(this, 0, 0, canvas.width, canvas.height);
-                };
-                image.src = '{{ image_url }}';
-            }
-        </script>
+            <div class="col-md-6">
+                <ul>
+                    {% for face in faces %}
+                        <li>{{ face.face_id }}</li>
+                        <ul>
+                            {% set rect = face.face_rectangle %}
+                            <li>Localización:</li>
+                            <ul>
+                                <li>Coordenada arriba: {{ rect.top }}</li>
+                                <li>Coordenada izquierda: {{ rect.left }}</li>
+                                <li>Ancho: {{ rect.width }} px</li>
+                                <li>Alto: {{ rect.height }} px</li>
+                            </ul>
+                            <li>Edad: {{ face.face_attributes.age }}</li>
+                            <li>Emoción:</li>
+                            <ul>
+                                <li>Nombre: {{ face.emotion.name }}</li>
+                                <li>Puntuación: {{ face.emotion.score }}</li>
+                            </ul>
+                        </ul>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 
     
@@ -37,4 +43,3 @@
         </div>
     </div>    
 {% endblock %}
-
